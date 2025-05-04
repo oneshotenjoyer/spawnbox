@@ -24,8 +24,10 @@ class SpawnBox:
         self.delta = 1/60
 
         self.u_delta = 0
+
         self.updaters = []
         self.drawers = []
+        self.initer = []
 
         self.input = Input()
     
@@ -39,6 +41,10 @@ class SpawnBox:
     def startDrawers(self):
         for drawer in self.drawers:
             drawer()
+
+    def startInit(self):
+        for init in self.initer:
+            init()
       
     def mainloop(self):
         sdl2.SDL_ShowWindow(self.window)
@@ -47,6 +53,8 @@ class SpawnBox:
         frequency = sdl2.SDL_GetPerformanceFrequency()
         
         event = sdl2.SDL_Event()
+
+        self.startInit() # innit?
 
         while self.running != False:
             while sdl2.SDL_PollEvent(event) != 0:
@@ -76,4 +84,9 @@ class SpawnBox:
     
     def addDrawer(self, fn):
         self.drawers.append(fn)
+        return fn
+    
+    def init(self, fn):
+        if len(self.initer) < 1:
+            self.initer.append(fn)
         return fn
